@@ -99,5 +99,8 @@ Because Airflow is tricky on Windows, we use **Docker**.
 
 - docker-compose.yml
 - dockerfile
+- What in youtube how to install:
+  https://www.youtube.com/watch?v=N3Tdmt1SRTM&list=PLc2EZr8W2QIAI0cS1nZGNxoLzppb7XbqM&index=2
+  
 
 
