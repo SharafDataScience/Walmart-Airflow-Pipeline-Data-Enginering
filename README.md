@@ -1,3 +1,5 @@
+![image](https://github.com/user-attachments/assets/3c0086ae-8318-449a-9b55-8f577ca53433)
+
 # Walmart Holiday Sales Data Pipeline
 
 This project builds a **modern ETL data pipeline** to analyze Walmart's grocery sales around major US public holidays, including the Super Bowl, Labour Day, Thanksgiving, and Christmas.
