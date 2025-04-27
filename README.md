@@ -96,6 +96,6 @@ Because Airflow is tricky on Windows, we use **Docker**.
 ### Step 2: use floowing files to Setup the Project
 
 - docker-compose.yml
-- -
+- dockerfile
 
 
