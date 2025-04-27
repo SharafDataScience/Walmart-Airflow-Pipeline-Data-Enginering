@@ -93,10 +93,9 @@ Because Airflow is tricky on Windows, we use **Docker**.
 
 ---
 
-### Step 2: Clone or Setup the Project
+### Step 2: use floowing files to Setup the Project
 
-```bash
-git clone https://github.com/your-username/walmart-airflow-pipeline.git
-cd walmart-airflow-pipeline
+- docker-compose.yml
+- -
 
 
