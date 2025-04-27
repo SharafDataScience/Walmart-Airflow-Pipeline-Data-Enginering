@@ -1,71 +1,54 @@
-# Walmart Holiday Sales Data Pipeline 
+# Walmart Holiday Sales Data Pipeline
 
-This project builds a **data pipeline** to analyze Walmart's grocery sales around major public holidays such as Super Bowl, Labour Day, Thanksgiving, and Christmas.  
-The goal is to process, transform, and analyze the data to uncover seasonal sales patterns and store the results efficiently.
+This project builds a **modern ETL data pipeline** to analyze Walmart's grocery sales around major US public holidays, including the Super Bowl, Labour Day, Thanksgiving, and Christmas.
+
+The pipeline is fully automated with **Apache Airflow**, uses **Docker** for containerization, and includes **unit tests** to ensure the reliability of each ETL step.
+
+---
 
 ## Project Overview
 
 - **Data Sources**:
-  - **Grocery Sales Table** from a PostgreSQL database
-  - **Complementary Data** from a Parquet file (`extra_data.parquet`)
-  
-- **Pipeline Steps**:
-  - Extract and merge data from multiple sources
-  - Clean and transform the raw data
-  - Aggregate monthly sales data
-  - Save the cleaned and aggregated data to CSV files
-  - Validate that the output files were correctly saved
+  - **PostgreSQL**: Grocery sales main table
+  - **Parquet File**: Extra complementary data (`extra_data.parquet`)
+
+- **ETL Steps**:
+  1. **Extract**: Merge grocery sales with extra data.
+  2. **Transform**: Clean, filter, and restructure the dataset.
+  3. **Aggregate**: Calculate average weekly sales per month.
+  4. **Load**: Save processed data to CSV files.
+  5. **Validate**: Ensure output files are successfully saved.
+
+- **Airflow DAG**:
+  - DAG Name: `etl_workflow_dag`
+  - Orchestrates the full ETL pipeline with sensors, operators, and branching.
+
+- **Testing**:
+  - Unit tests for each ETL step using `pytest`.
+
+---
 
 ## Technologies Used
 
 - Python 3
 - Pandas
-- Parquet (data format)
-- PostgreSQL (source database)
-- OS module (file validation)
+- PyArrow / Fastparquet
+- PostgreSQL
+- Apache Airflow 2.7+
+- Docker & Docker Compose
+- OS Module
+- Pytest (for testing)
 
-## Functions Overview
+---
 
-- `extract(store_data, extra_data_path)`:  
-  Merges grocery sales data with complementary data based on the "index" column.
+##  Data Features
 
-- `transform(raw_data)`:  
-  Cleans the data by:
-  - Filling missing values
-  - Converting date columns
-  - Extracting month values
-  - Filtering based on minimum sales
-  - Dropping unnecessary columns
+| Table            | Description                                 |
+|------------------|---------------------------------------------|
+| `grocery_sales`   | Store sales weekly data                    |
+| `extra_data`      | Holidays, economy indicators, promotions   |
 
-- `avg_weekly_sales_per_month(clean_data)`:  
-  Calculates the average weekly sales per month.
-
-- `load(full_data, full_data_file_path, agg_data, agg_data_file_path)`:  
-  Saves both cleaned and aggregated data into CSV files.
-
-- `validation(file_path)`:  
-  Verifies if the output CSV files were successfully created.
-
-## Data Features
-
-### grocery_sales Table:
-- `"index"`: Unique row ID
-- `"Store_ID"`: Store number
-- `"Date"`: Sales week
-- `"Weekly_Sales"`: Weekly sales amount
-
-### extra_data.parquet:
-- `"IsHoliday"`: 1 if the week includes a holiday, otherwise 0
-- `"Temperature"`: Temperature at the time of sale
-- `"Fuel_Price"`: Regional fuel price
-- `"CPI"`: Consumer Price Index
-- `"Unemployment"`: Unemployment rate
-- `"MarkDown1-4"`: Promotional markdowns
-- `"Dept"`: Department number
-- `"Size"`: Store size
-- `"Type"`: Store type (inferred from Size)
-
-### Final Transformed Columns:
+**Transformed Columns:**
 - `Store_ID`
 - `Month`
 - `Dept`
@@ -74,10 +57,46 @@ The goal is to process, transform, and analyze the data to uncover seasonal sale
 - `CPI`
 - `Unemployment`
 
+---
+
 ## Output
 
-Two CSV files are generated:
-- `clean_data.csv`: Cleaned and processed dataset
-- `agg_data.csv`: Aggregated average weekly sales per month
+The pipeline generates two output CSV files:
+- `output/clean_data.csv`: Fully cleaned and filtered dataset.
+- `output/agg_data.csv`: Aggregated average weekly sales per month.
+
+---
+
+## ETL Functions Summary
+
+| Function | Purpose |
+|:---------|:--------|
+| `extract(store_data, extra_data_path)` | Merge grocery sales with extra data |
+| `transform(raw_data)` | Clean and restructure dataset |
+| `avg_weekly_sales_per_month(clean_data)` | Aggregate average sales per month |
+| `load(full_data, full_path, agg_data, agg_path)` | Save data as CSV |
+| `validation(file_path)` | Check if file exists |
+
+---
+
+
+##  How to Run Airflow on Windows 11 (via Docker)
+
+Because Airflow is tricky on Windows, we use **Docker**.
+
+### Step 1: Install Prerequisites
+- Install **Docker Desktop** with **WSL 2** enabled.
+- Install **Git** if needed.
+
+[Install Docker Desktop](https://docs.docker.com/desktop/install/windows-install/)  
+[Install WSL2](https://learn.microsoft.com/en-us/windows/wsl/install)
+
+---
+
+### Step 2: Clone or Setup the Project
+
+```bash
+git clone https://github.com/your-username/walmart-airflow-pipeline.git
+cd walmart-airflow-pipeline
 
 
